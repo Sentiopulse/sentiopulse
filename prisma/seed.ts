@@ -27,24 +27,22 @@ async function main() {
   const maxSubposts = 20;
   let subpostsCreated = 0;
   for (let i = 0; i < maxPosts; i++) {
-    const post = await prisma.post.create({
-      data: {
-        title: faker.lorem.sentence(),
-        bullishSummary: faker.lorem.paragraph(),
-        bearishSummary: faker.lorem.paragraph(),
-        neutralSummary: faker.lorem.paragraph(),
-        totalSubposts: 0, // will update after subposts
-      },
-    });
-
-    // Calculate remaining subposts allowed
     const remainingSubposts = maxSubposts - subpostsCreated;
     if (remainingSubposts <= 0) break;
-    // Each post gets at least 1 subpost, max 6, but not exceeding maxSubposts
-    const subpostCount = Math.min(faker.number.int({ min: 1, max: 6 }), remainingSubposts);
-    const subposts = [];
-    for (let j = 0; j < subpostCount; j++) {
-      subposts.push({
+    const subpostCount = faker.number.int({ min: 1, max: Math.min(6, remainingSubposts) });
+
+    const createdCount = await prisma.$transaction(async (tx) => {
+      const post = await tx.post.create({
+        data: {
+          title: faker.lorem.sentence(),
+          bullishSummary: faker.lorem.paragraph(),
+          bearishSummary: faker.lorem.paragraph(),
+          neutralSummary: faker.lorem.paragraph(),
+          totalSubposts: 0,
+        },
+      });
+
+      const subposts = Array.from({ length: subpostCount }).map(() => ({
         content: faker.lorem.paragraph(),
         sentiment: faker.helpers.arrayElement([
           Sentiment.BULLISH,
@@ -62,14 +60,14 @@ async function main() {
         subcategories: [faker.lorem.word(), faker.lorem.word()],
         link: faker.internet.url(),
         postId: post.id,
-      });
-    }
-    await prisma.subpost.createMany({ data: subposts });
-    await prisma.post.update({
-      where: { id: post.id },
-      data: { totalSubposts: subpostCount },
+      }));
+
+      await tx.subpost.createMany({ data: subposts });
+      await tx.post.update({ where: { id: post.id }, data: { totalSubposts: subpostCount } });
+      return subpostCount;
     });
-    subpostsCreated += subpostCount;
+
+    subpostsCreated += createdCount;
   }
 }
 
