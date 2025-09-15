@@ -1,8 +1,11 @@
 import {
   Select,
+  SelectContent,
   SelectItem,
+  SelectTrigger,
+  SelectValue,
 } from "@/components/ui/select";
-import { Input } from "@/components/ui/input";
+import PostSearchbar from "./PostSearchbar";
 import { PostSortSelect, SortField, SortOrder } from "./PostSortSelect";
 
 interface PostFiltersProps {
@@ -33,14 +36,7 @@ export default function PostFilters({
   return (
     <div className="mb-8 space-y-6">
       {/* Search Bar */}
-      <div className="flex justify-center">
-        <Input
-          value={search}
-          onChange={onSearchChange}
-          placeholder="Search posts..."
-          className="w-full max-w-md shadow-md rounded-lg border border-gray-200 focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition"
-        />
-      </div>
+      <PostSearchbar search={search} onSearchChange={onSearchChange} />
 
       {/* Filters & Sorters Card */}
       <div className="flex flex-wrap justify-between items-center gap-6 p-4 bg-white rounded-xl shadow-lg border border-gray-100">
@@ -65,11 +61,16 @@ export default function PostFilters({
             <label className="text-base font-semibold text-purple-500 mb-2">
               Sentiment
             </label>
-            <Select value={sentimentFilter} onChange={(e) => onSentimentChange(e.target.value)}>
-              <SelectItem value="all">All</SelectItem>
-              <SelectItem value="BULLISH">Bullish</SelectItem>
-              <SelectItem value="NEUTRAL">Neutral</SelectItem>
-              <SelectItem value="BEARISH">Bearish</SelectItem>
+            <Select value={sentimentFilter} onValueChange={onSentimentChange}>
+              <SelectTrigger>
+                <SelectValue placeholder="Select sentiment" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All</SelectItem>
+                <SelectItem value="BULLISH">Bullish</SelectItem>
+                <SelectItem value="NEUTRAL">Neutral</SelectItem>
+                <SelectItem value="BEARISH">Bearish</SelectItem>
+              </SelectContent>
             </Select>
           </div>
 
@@ -77,16 +78,18 @@ export default function PostFilters({
             <label className="text-base font-semibold text-purple-500 mb-2">
               Source
             </label>
-            <Select
-              value={sourceFilter}
-              onChange={(e) => onSourceChange(e.target.value)}
-            >
-              <SelectItem value="all">All Sources</SelectItem>
-              <SelectItem value="REDDIT">Reddit</SelectItem>
-              <SelectItem value="TWITTER">Twitter</SelectItem>
-              <SelectItem value="YOUTUBE">YouTube</SelectItem>
-              <SelectItem value="TELEGRAM">Telegram</SelectItem>
-              <SelectItem value="FARCASTER">Farcaster</SelectItem>
+            <Select value={sourceFilter} onValueChange={onSourceChange}>
+              <SelectTrigger>
+                <SelectValue placeholder="Select source" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Sources</SelectItem>
+                <SelectItem value="REDDIT">Reddit</SelectItem>
+                <SelectItem value="TWITTER">Twitter</SelectItem>
+                <SelectItem value="YOUTUBE">YouTube</SelectItem>
+                <SelectItem value="TELEGRAM">Telegram</SelectItem>
+                <SelectItem value="FARCASTER">Farcaster</SelectItem>
+              </SelectContent>
             </Select>
           </div>
         </div>
