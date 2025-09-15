@@ -96,69 +96,12 @@ export default function PostsList() {
   }, [hasMore, loading, nextCursor, fetchPosts]);
 
   return (
-    <>
-      <div className="mt-8">
-        <PostFilters
-          search={search}
-          onSearchChange={onChangeHandler}
-          sortField={sortField}
-          sortOrder={sortOrder}
-          onSortFieldChange={setSortField}
-          onSortOrderChange={setSortOrder}
-          sentimentFilter={sentimentFilter}
-          onSentimentChange={setSentimentFilter}
-          sourceFilter={sourceFilter}
-          onSourceChange={setSourceFilter}
-        />
-      </div>
-
-      {!loading && !error && info.length > 0 && (
-        <SentimentBar
-          info={info.filter(
-            (post) =>
-              (sentimentFilter === "all" ||
-                post.sentiment === sentimentFilter) &&
-              (sourceFilter === "all" || post.source === sourceFilter)
-          )}
-        />
-      )}
-
-      {error && <div className="text-destructive text-center">{error}</div>}
-
-      {loading && (
-        <div className="py-8 flex justify-center">
-          <Spinner label="Loading posts" />
-        </div>
-      )}
-
-      {!loading && !error && !info.length && (
-        <div className="text-destructive text-center">No Posts Found</div>
-      )}
-
-      {!loading && !error && info.length > 0 && (
-        <div className="flex flex-col gap-4 items-center">
-          {info
-            .filter(
-              (post) =>
-                (sentimentFilter === "all" ||
-                  post.sentiment === sentimentFilter) &&
-                (sourceFilter === "all" || post.source === sourceFilter)
-            )
-            .map((post: Post) => (
-              <PostCard key={post.id} post={post} />
-            ))}
-          {/* Infinite scroll trigger */}
-          {hasMore && (
-            <div ref={loadMoreRef} className="py-4">
-              {loadingMore ? (
-                <Spinner label="Loading more posts" />
-              ) : (
-                <span>Loading more...</span>
-              )}
-            </div>
-          )}
-        </div>
-      )}
-    </>
+    <div className="mt-8">
+      <PostFilters
+        search={search}
+        onSearchChange={onChangeHandler}
+      />
+      <PostCard/>
+    </div>
   );
 }
