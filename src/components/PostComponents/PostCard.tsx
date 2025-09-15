@@ -8,9 +8,7 @@ import { Card, CardDescription, CardHeader, CardTitle } from "../ui/card";
 
 type Source = {
   name: string;
-  icon: React.ReactNode;
   count: number;
-  color: string;
 };
 
 type PostData = {
@@ -21,7 +19,7 @@ type PostData = {
   postCount: number;
   sources: Source[];
   categories: string[];
-  extraTags?: string;
+  subcategories?: string[];
 };
 
 // Mock data array
@@ -36,25 +34,19 @@ const mockPostsData: PostData[] = [
     sources: [
       {
         name: "Twitter",
-        icon: <FaTwitter className="w-2 h-2" />,
         count: 12,
-        color: "text-blue-500",
       },
       {
         name: "LinkedIn",
-        icon: <FaLinkedin className="w-2 h-2" />,
         count: 8,
-        color: "text-blue-600",
       },
       {
         name: "Reddit",
-        icon: <FaReddit className="w-2 h-2" />,
         count: 4,
-        color: "text-orange-600",
       },
     ],
-    categories: ["Bitcoin", "Institutional", "adoption"],
-    extraTags: "+1",
+    categories: ["Bitcoin", "Institutional"],
+    subcategories: ["ETF", "Regulation", "Spot", "Futures"],
   },
   {
     title: "Ethereum DeFi Protocol Updates",
@@ -66,19 +58,15 @@ const mockPostsData: PostData[] = [
     sources: [
       {
         name: "Twitter",
-        icon: <FaTwitter className="w-2 h-2" />,
         count: 10,
-        color: "text-blue-500",
       },
       {
         name: "Reddit",
-        icon: <FaReddit className="w-2 h-2" />,
         count: 8,
-        color: "text-orange-600",
       },
     ],
-    categories: ["Ethereum", "DeFi", "Protocol"],
-    extraTags: "+2",
+    categories: ["Ethereum"],
+    subcategories: ["Lending", "DEX", "Staking", "Yield", "Bridge"],
   },
   {
     title: "Market Volatility Analysis",
@@ -90,19 +78,15 @@ const mockPostsData: PostData[] = [
     sources: [
       {
         name: "LinkedIn",
-        icon: <FaLinkedin className="w-2 h-2" />,
         count: 15,
-        color: "text-blue-600",
       },
       {
         name: "Reddit",
-        icon: <FaReddit className="w-2 h-2" />,
         count: 17,
-        color: "text-orange-600",
       },
     ],
-    categories: ["Market", "Volatility", "Analysis"],
-    extraTags: "+3",
+    categories: ["Market", "Volatility"],
+    subcategories: ["Crash", "Recovery", "Bear", "Bull"],
   },
 ];
 
@@ -121,7 +105,7 @@ export function SinglePostCard({ post }: { post: PostData }) {
       : "text-gray-700 bg-gray-100";
 
   return (
-    <Card className="w-54 h-60 font-sans">
+    <Card className="w-54 h-66 font-sans">
       <CardHeader className="p-2">
         <CardTitle className="text-[10px] font-semibold leading-tight mb-1">
           {post.title}
@@ -168,16 +152,22 @@ export function SinglePostCard({ post }: { post: PostData }) {
           {post.sources.map((src, idx) => {
             let pillClass =
               "px-2 py-0.5 rounded-full flex items-center gap-1 border text-[9px] font-medium";
-            if (src.name === "Twitter")
+            let icon = null;
+            if (src.name === "Twitter") {
               pillClass += " bg-blue-50 text-blue-600 border-blue-200";
-            else if (src.name === "LinkedIn")
+              icon = <FaTwitter className="w-2 h-2" />;
+            } else if (src.name === "LinkedIn") {
               pillClass += " bg-blue-50 text-blue-600 border-blue-200";
-            else if (src.name === "Reddit")
+              icon = <FaLinkedin className="w-2 h-2" />;
+            } else if (src.name === "Reddit") {
               pillClass += " bg-orange-50 text-orange-600 border-orange-200";
-            else pillClass += " bg-gray-50 text-gray-600 border-gray-200";
+              icon = <FaReddit className="w-2 h-2" />;
+            } else {
+              pillClass += " bg-gray-50 text-gray-600 border-gray-200";
+            }
             return (
               <span key={src.name + idx} className={pillClass}>
-                {src.icon}
+                {icon}
                 {src.name} <span className="font-semibold">({src.count})</span>
               </span>
             );
@@ -186,23 +176,42 @@ export function SinglePostCard({ post }: { post: PostData }) {
 
         {/* Category/Subcategory Tags */}
         <div className="flex flex-wrap gap-0.5">
-          {post.categories.map((cat, idx) => (
-            <span
-              key={cat + idx}
-              className={`px-1 py-0.5 text-[7px] font-medium ${
-                idx === 0
-                  ? "text-white bg-blue-500"
-                  : "text-blue-700 bg-blue-100"
-              } rounded-full`}
-            >
-              #{cat}
-            </span>
-          ))}
-          {post.extraTags && (
-            <span className="text-[7px] text-gray-500 px-1 py-0.5">
-              {post.extraTags}
-            </span>
-          )}
+          {(() => {
+            const allTags = [
+              ...post.categories.map((cat) => ({
+                type: "category",
+                value: cat,
+              })),
+              ...(post.subcategories || []).map((subcat) => ({
+                type: "subcategory",
+                value: subcat,
+              })),
+            ];
+            const visibleTags = allTags.slice(0, 5);
+            const remainingCount = allTags.length - 5;
+
+            return (
+              <>
+                {visibleTags.map((tag, idx) => (
+                  <span
+                    key={tag.value + idx}
+                    className={`px-1 py-0.5 text-[7px] font-medium rounded-full ${
+                      tag.type === "category"
+                        ? "text-white bg-blue-500"
+                        : "text-blue-700 border border-blue-500 bg-transparent"
+                    }`}
+                  >
+                    #{tag.value}
+                  </span>
+                ))}
+                {remainingCount > 0 && (
+                  <span className="px-1 py-0.5 text-[7px] font-medium text-gray-700 bg-gray-100 rounded-full">
+                    +{remainingCount} more
+                  </span>
+                )}
+              </>
+            );
+          })()}
         </div>
       </CardHeader>
     </Card>
