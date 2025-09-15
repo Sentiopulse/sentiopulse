@@ -16,7 +16,7 @@ datasource db {
 model User {
   id               String    @id @default(uuid())
   walletAddress    String?   @unique
-  email            String?    @unique
+  email            String?   @unique
   name             String?
   password         String?
   role             Role      @default(USER)
@@ -49,16 +49,25 @@ enum Source {
 }
 
 model Post {
+  id             String    @id @default(uuid())
+  title          String
+  subposts       Subpost[]
+  totalSubposts  Int       @default(0)
+  bullishSummary String?
+  bearishSummary String?
+  neutralSummary String?
+}
+
+model Subpost {
   id            String    @id @default(uuid())
-  title         String
   content       String
   sentiment     Sentiment
   source        Source
   categories    String[]  @default([])
   subcategories String[]  @default([])
+  link          String?
+  postId        String
+  post          Post      @relation(fields: [postId], references: [id])
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
-
-  @@index([categories], type: Gin)
-  @@index([subcategories], type: Gin)
 }
