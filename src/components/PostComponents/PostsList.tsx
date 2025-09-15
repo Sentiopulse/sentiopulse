@@ -1,11 +1,11 @@
 "use client";
 import { useEffect, useState, useRef, useCallback } from "react";
-import PostCard from "./PostCard";
 import SentimentBar from "./SentimentBar";
 import PostFilters from "./PostFilters";
 import { SortField, SortOrder } from "./PostSortSelect";
 import Spinner from "./Spinner";
 import type { Post } from "@prisma/client";
+import PostGallery from "./PostGallery";
 
 export default function PostsList() {
   const [error, setError] = useState<string | null>(null);
@@ -101,7 +101,7 @@ export default function PostsList() {
         search={search}
         onSearchChange={onChangeHandler}
       />
-      <PostCard/>
+      <PostGallery/>
     </div>
   );
 }

@@ -5,6 +5,8 @@ import { CiChat1 } from "react-icons/ci";
 import { FaTwitter, FaLinkedin, FaReddit } from "react-icons/fa";
 
 import { Card, CardDescription, CardHeader, CardTitle } from "../ui/card";
+import TagRenderer from "./TagRenderer";
+import { Sentiment } from "@prisma/client";
 
 type Source = {
   name: string;
@@ -14,7 +16,7 @@ type Source = {
 type PostData = {
   title: string;
   description: string;
-  sentiment: "Bullish" | "Bearish" | "Neutral";
+  sentiment: Sentiment;
   sentimentBar: { bullish: number; neutral: number; bearish: number };
   postCount: number;
   sources: Source[];
@@ -28,7 +30,7 @@ const mockPostsData: PostData[] = [
     title: "Bitcoin Institutional Adoption & Market Sentiment",
     description:
       "Major financial institutions showing increased interest in Bitcoin with positive analyst reports...",
-    sentiment: "Bullish",
+    sentiment: "BULLISH",
     sentimentBar: { bullish: 60, neutral: 25, bearish: 15 },
     postCount: 24,
     sources: [
@@ -52,7 +54,7 @@ const mockPostsData: PostData[] = [
     title: "Ethereum DeFi Protocol Updates",
     description:
       "New developments in decentralized finance protocols showing promising growth patterns...",
-    sentiment: "Neutral",
+    sentiment: "NEUTRAL",
     sentimentBar: { bullish: 30, neutral: 50, bearish: 20 },
     postCount: 18,
     sources: [
@@ -72,7 +74,7 @@ const mockPostsData: PostData[] = [
     title: "Market Volatility Analysis",
     description:
       "Recent market downturn showing concerning trends across major cryptocurrencies...",
-    sentiment: "Bearish",
+    sentiment: "BEARISH",
     sentimentBar: { bullish: 15, neutral: 25, bearish: 60 },
     postCount: 32,
     sources: [
@@ -90,17 +92,16 @@ const mockPostsData: PostData[] = [
   },
 ];
 
-type PostCardProps = {
+type PostsGalleryProps = {
   posts?: PostData[];
-  showMultiple?: boolean;
 };
 
 // Single card component
 export function SinglePostCard({ post }: { post: PostData }) {
   const sentimentColor =
-    post.sentiment === "Bullish"
+    post.sentiment === "BULLISH"
       ? "text-green-700 bg-green-100"
-      : post.sentiment === "Bearish"
+      : post.sentiment === "BEARISH"
       ? "text-red-700 bg-red-100"
       : "text-gray-700 bg-gray-100";
 
@@ -176,62 +177,24 @@ export function SinglePostCard({ post }: { post: PostData }) {
 
         {/* Category/Subcategory Tags */}
         <div className="flex flex-wrap gap-0.5">
-          {(() => {
-            const allTags = [
-              ...post.categories.map((cat) => ({
-                type: "category",
-                value: cat,
-              })),
-              ...(post.subcategories || []).map((subcat) => ({
-                type: "subcategory",
-                value: subcat,
-              })),
-            ];
-            const visibleTags = allTags.slice(0, 5);
-            const remainingCount = allTags.length - 5;
-
-            return (
-              <>
-                {visibleTags.map((tag, idx) => (
-                  <span
-                    key={tag.value + idx}
-                    className={`px-1 py-0.5 text-[7px] font-medium rounded-full ${
-                      tag.type === "category"
-                        ? "text-white bg-blue-500"
-                        : "text-blue-700 border border-blue-500 bg-transparent"
-                    }`}
-                  >
-                    #{tag.value}
-                  </span>
-                ))}
-                {remainingCount > 0 && (
-                  <span className="px-1 py-0.5 text-[7px] font-medium text-gray-700 bg-gray-100 rounded-full">
-                    +{remainingCount} more
-                  </span>
-                )}
-              </>
-            );
-          })()}
+          <TagRenderer
+            categories={post.categories}
+            subcategories={post.subcategories}
+          />
         </div>
       </CardHeader>
     </Card>
   );
 }
 
-export default function PostCard({
+export default function PostsGallery({
   posts = mockPostsData,
-  showMultiple = true,
-}: PostCardProps) {
-  if (showMultiple) {
-    return (
-      <div className="flex flex-row justify-center gap-6 p-2">
-        {posts.map((post, index) => (
-          <SinglePostCard key={index} post={post} />
-        ))}
-      </div>
-    );
-  }
-
-  // Show only the first card if showMultiple is false
-  return <SinglePostCard post={posts[0]} />;
+}: PostsGalleryProps) {
+  return (
+    <div className="flex flex-row justify-center gap-6 p-2">
+      {posts.map((post, index) => (
+        <SinglePostCard key={index} post={post} />
+      ))}
+    </div>
+  );
 }
