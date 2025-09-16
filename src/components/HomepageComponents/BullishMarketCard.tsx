@@ -1,3 +1,4 @@
+"use client";
 import {
   Card,
   CardAction,
@@ -31,7 +32,7 @@ const MockData = {
       BEARISH: Math.round((BEARISH / total) * 100),
     };
   },
-  updatedAt: new Date('2025-09-16T09:55:00Z'), // Fixed date for SSR compatibility
+  updatedAt: new Date("2025-09-16T09:55:00Z"), // Fixed date for SSR compatibility
   get minutesAgo() {
     return Math.floor((Date.now() - this.updatedAt.getTime()) / 60000);
   },
@@ -40,7 +41,7 @@ const MockData = {
 export default function BullishMarketCard() {
   return (
     <div className="flex justify-center font-sans">
-      <Card className="flex w-[500px] h-[240px] md:w-[800px] bg-gradient-to-r from-green-50 to-white border-l-green-500">
+      <Card className="flex w-[500px] h-[240px] md:w-[950px] bg-gradient-to-r from-green-50 to-white border-l-green-500 border-5">
         <CardHeader className="flex flex-col w-full">
           <div className="flex flex-row justify-between w-full">
             <CardTitle className="font-semibold">Bullish Market</CardTitle>
@@ -77,19 +78,43 @@ export default function BullishMarketCard() {
         <CardContent>
           <div className="flex flex-col justify-start">
             <div className="flex flex-row items-center gap-6 w-[100px]">
-              <span style={{ width: `${MockData.sentimentPercentages.BULLISH}%` }} className="bg-green-500 h-2.5 rounded-2xl"></span>
+              <span
+                role="progressbar"
+                aria-label="Bullish sentiment"
+                aria-valuemin={0}
+                aria-valuemax={100}
+                aria-valuenow={MockData.sentimentPercentages.BULLISH}
+                style={{ width: `${MockData.sentimentPercentages.BULLISH}%` }}
+                className="block bg-green-500 h-2.5 rounded-2xl"
+              ></span>
               <span className="text-muted-foreground text-xs">
                 {MockData.sentimentPercentages.BULLISH}%
               </span>
             </div>
             <div className="flex flex-row items-center gap-6 w-[100px]">
-              <span style={{ width: `${MockData.sentimentPercentages.NEUTRAL}%` }} className="bg-gray-500 h-2.5 w-10 rounded-2xl"></span>
+              <span
+                role="progressbar"
+                aria-label="Neutral sentiment"
+                aria-valuemin={0}
+                aria-valuemax={100}
+                aria-valuenow={MockData.sentimentPercentages.NEUTRAL}
+                style={{ width: `${MockData.sentimentPercentages.NEUTRAL}%` }}
+                className="block bg-gray-500 h-2.5 rounded-2xl"
+              ></span>
               <span className="text-muted-foreground text-xs">
                 {MockData.sentimentPercentages.NEUTRAL}%
               </span>
             </div>
             <div className="flex flex-row items-center gap-6 w-[100px]">
-              <span style={{ width: `${MockData.sentimentPercentages.BEARISH}%` }} className="bg-red-500 h-2.5 w-10 rounded-2xl"></span>
+              <span
+                role="progressbar"
+                aria-label="Bearish sentiment"
+                aria-valuemin={0}
+                aria-valuemax={100}
+                aria-valuenow={MockData.sentimentPercentages.BEARISH}
+                style={{ width: `${MockData.sentimentPercentages.BEARISH}%` }}
+                className="block bg-red-500 h-2.5 rounded-2xl"
+              ></span>
               <span className="text-muted-foreground text-xs">
                 {MockData.sentimentPercentages.BEARISH}%
               </span>
