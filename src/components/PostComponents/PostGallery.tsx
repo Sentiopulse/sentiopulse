@@ -191,7 +191,7 @@ export default function PostsGallery({
   posts = mockPostsData,
 }: PostsGalleryProps) {
   return (
-    <div className="flex flex-row justify-center gap-6 p-2">
+    <div className="flex flex-row justify-start ml-30 gap-6 p-2">
       {posts.map((post, index) => (
         <SinglePostCard key={index} post={post} />
       ))}

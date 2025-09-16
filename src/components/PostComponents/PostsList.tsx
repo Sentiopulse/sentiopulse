@@ -6,6 +6,7 @@ import { SortField, SortOrder } from "./PostSortSelect";
 import Spinner from "./Spinner";
 import type { Post } from "@prisma/client";
 import PostGallery from "./PostGallery";
+import BullishMarketCard from "../HomepageComponents/BullishMarketCard";
 
 export default function PostsList() {
   const [error, setError] = useState<string | null>(null);
@@ -101,6 +102,7 @@ export default function PostsList() {
         search={search}
         onSearchChange={onChangeHandler}
       />
+      <BullishMarketCard/>
       <PostGallery/>
     </div>
   );
