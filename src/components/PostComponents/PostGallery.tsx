@@ -7,7 +7,7 @@ import { FiMinus } from "react-icons/fi";
 
 import { Card, CardDescription, CardHeader, CardTitle } from "../ui/card";
 import TagRenderer from "./TagRenderer";
-import { Sentiment, Source } from "@prisma/client";
+import type { Sentiment, Source } from "@prisma/client";
 
 type PostGroup = {
   id: string;
@@ -137,11 +137,14 @@ export function PostCard({ postGroup }: { postGroup: PostGroup }) {
   );
 
   const totalPosts = postGroup.posts.length;
-  const sentimentBar = {
-    bullish: (sentimentCounts.bullish / totalPosts) * 100,
-    neutral: (sentimentCounts.neutral / totalPosts) * 100,
-    bearish: (sentimentCounts.bearish / totalPosts) * 100,
-  };
+  const sentimentBar =
+    totalPosts > 0
+      ? {
+          bullish: (sentimentCounts.bullish / totalPosts) * 100,
+          neutral: (sentimentCounts.neutral / totalPosts) * 100,
+          bearish: (sentimentCounts.bearish / totalPosts) * 100,
+        }
+      : { bullish: 0, neutral: 0, bearish: 0 };
 
   // Determine dominant sentiment and description
   const getDominantSentiment = () => {
