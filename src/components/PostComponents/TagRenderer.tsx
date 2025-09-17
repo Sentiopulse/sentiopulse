@@ -30,7 +30,7 @@ export default function TagRenderer({
       {visibleTags.map((tag, idx) => (
         <span
           key={tag.value + idx}
-          className={`px-1 py-0.5 text-[7px] font-medium rounded-full ${
+          className={`flex items-center justify-center px-1 py-1 text-[7px] font-medium rounded-full ${
             tag.type === "category"
               ? "text-white bg-blue-500"
               : "text-blue-700 border border-blue-500 bg-transparent"

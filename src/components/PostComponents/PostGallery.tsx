@@ -2,6 +2,8 @@
 
 import { CiChat1 } from "react-icons/ci";
 import { FaTwitter, FaLinkedin, FaReddit } from "react-icons/fa";
+import { IoIosTrendingUp, IoIosTrendingDown } from "react-icons/io";
+import { FiMinus } from "react-icons/fi";
 
 import { Card, CardDescription, CardHeader, CardTitle } from "../ui/card";
 import TagRenderer from "./TagRenderer";
@@ -141,6 +143,39 @@ export function PostCard({ postGroup }: { postGroup: PostGroup }) {
     bearish: (sentimentCounts.bearish / totalPosts) * 100,
   };
 
+  // Determine dominant sentiment and description
+  const getDominantSentiment = () => {
+    const max = Math.max(
+      sentimentCounts.bullish,
+      sentimentCounts.neutral,
+      sentimentCounts.bearish
+    );
+
+    if (
+      sentimentCounts.bullish === sentimentCounts.neutral &&
+      sentimentCounts.neutral === sentimentCounts.bearish
+    ) {
+      return { sentiment: "NEUTRAL", description: postGroup.neutralSummary };
+    }
+
+    if (sentimentCounts.bullish === max) {
+      return { sentiment: "BULLISH", description: postGroup.bullishSummary };
+    } else if (sentimentCounts.bearish === max) {
+      return { sentiment: "BEARISH", description: postGroup.bearishSummary };
+    } else {
+      return { sentiment: "NEUTRAL", description: postGroup.neutralSummary };
+    }
+  };
+
+  const dominantSentiment = getDominantSentiment();
+
+  const sentimentColor =
+    dominantSentiment.sentiment === "BULLISH"
+      ? "text-green-700 bg-green-100"
+      : dominantSentiment.sentiment === "BEARISH"
+      ? "text-red-700 bg-red-100"
+      : "text-gray-700 bg-gray-100";
+
   // Get source counts
   const sourceCounts = postGroup.posts.reduce((acc, post) => {
     acc[post.source] = (acc[post.source] || 0) + 1;
@@ -163,13 +198,26 @@ export function PostCard({ postGroup }: { postGroup: PostGroup }) {
         </CardTitle>
 
         <CardDescription className="text-xs text-gray-600 mb-3 line-clamp-3">
-          {postGroup.bullishSummary ||
-            postGroup.neutralSummary ||
-            postGroup.bearishSummary}
+          {dominantSentiment.description}
         </CardDescription>
 
-        {/* Post count indicator */}
-        <div className="flex items-center gap-1 mb-3">
+        {/* Sentiment tag and post count */}
+        <div className="flex items-center gap-2 mb-3">
+          <span
+            className={`inline-flex items-center gap-1 px-2 py-0.5 text-xs font-medium rounded-full ${sentimentColor}`}
+          >
+            {dominantSentiment.sentiment === "BULLISH" && (
+              <IoIosTrendingUp className="text-green-600 w-4 h-4" />
+            )}
+            {dominantSentiment.sentiment === "BEARISH" && (
+              <IoIosTrendingDown className="text-red-600 w-4 h-4" />
+            )}
+            {dominantSentiment.sentiment === "NEUTRAL" && (
+              <FiMinus className="text-gray-600 w-4 h-4" />
+            )}
+            {dominantSentiment.sentiment.charAt(0) +
+              dominantSentiment.sentiment.slice(1).toLowerCase()}
+          </span>
           <div className="flex items-center gap-1 text-xs text-gray-600">
             <CiChat1 className="w-3 h-3" />
             {postGroup.totalposts} posts
