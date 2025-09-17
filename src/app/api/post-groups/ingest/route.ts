@@ -12,7 +12,6 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-
     let data;
     try {
         data = await req.json();
@@ -48,19 +47,10 @@ export async function POST(req: NextRequest) {
     }
     data = parseResult.data;
 
-    // Accept an array of post groups
-    if (!Array.isArray(data) || data.length === 0) {
-        return NextResponse.json({ error: "Request body must be a non-empty array of post groups" }, { status: 400 });
-    }
 
     const results = [];
     try {
         for (const group of data) {
-            if (!group.title) {
-                results.push({ error: "Missing title in post group", group });
-                continue;
-            }
-
             // Create the post group
             const createdGroup = await prisma.postGroup.create({
                 data: {
@@ -108,6 +98,7 @@ export async function POST(req: NextRequest) {
         }
         return NextResponse.json(results);
     } catch (e) {
-        return NextResponse.json({ error: "Database error", details: String(e) }, { status: 500 });
+        console.error("Database error during post-group ingest", e);
+        return NextResponse.json({ error: "Database error" }, { status: 500 });
     }
 }
