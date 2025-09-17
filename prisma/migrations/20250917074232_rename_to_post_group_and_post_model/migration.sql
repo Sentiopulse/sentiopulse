@@ -17,21 +17,42 @@
 -- DropForeignKey
 ALTER TABLE "public"."Subpost" DROP CONSTRAINT "Subpost_postId_fkey";
 
--- AlterTable
-ALTER TABLE "public"."Post" DROP COLUMN "bearishSummary",
+-- AlterTable - Step 1: Add new columns as nullable first
+ALTER TABLE "public"."Post" 
+ADD COLUMN     "categories" TEXT[] DEFAULT ARRAY[]::TEXT[],
+ADD COLUMN     "content" TEXT,
+ADD COLUMN     "createdAt" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
+ADD COLUMN     "link" TEXT,
+ADD COLUMN     "postGroupId" TEXT,
+ADD COLUMN     "sentiment" "public"."Sentiment",
+ADD COLUMN     "source" "public"."Source",
+ADD COLUMN     "subcategories" TEXT[] DEFAULT ARRAY[]::TEXT[],
+ADD COLUMN     "updatedAt" TIMESTAMP(3);
+
+-- Step 2: Backfill data for new columns
+UPDATE "public"."Post" SET 
+  "content" = COALESCE("title", 'Migrated content'),
+  "sentiment" = 'NEUTRAL',
+  "source" = 'REDDIT',
+  "updatedAt" = CURRENT_TIMESTAMP,
+  "createdAt" = COALESCE("createdAt", CURRENT_TIMESTAMP)
+WHERE "content" IS NULL;
+
+-- Step 3: Set NOT NULL constraints after backfill
+ALTER TABLE "public"."Post" 
+ALTER COLUMN "content" SET NOT NULL,
+ALTER COLUMN "createdAt" SET NOT NULL,
+ALTER COLUMN "sentiment" SET NOT NULL,
+ALTER COLUMN "source" SET NOT NULL,
+ALTER COLUMN "updatedAt" SET NOT NULL;
+
+-- Step 4: Drop old columns
+ALTER TABLE "public"."Post" 
+DROP COLUMN "bearishSummary",
 DROP COLUMN "bullishSummary",
 DROP COLUMN "neutralSummary",
 DROP COLUMN "title",
-DROP COLUMN "totalSubposts",
-ADD COLUMN     "categories" TEXT[] DEFAULT ARRAY[]::TEXT[],
-ADD COLUMN     "content" TEXT NOT NULL,
-ADD COLUMN     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-ADD COLUMN     "link" TEXT,
-ADD COLUMN     "postGroupId" TEXT NOT NULL,
-ADD COLUMN     "sentiment" "public"."Sentiment" NOT NULL,
-ADD COLUMN     "source" "public"."Source" NOT NULL,
-ADD COLUMN     "subcategories" TEXT[] DEFAULT ARRAY[]::TEXT[],
-ADD COLUMN     "updatedAt" TIMESTAMP(3) NOT NULL;
+DROP COLUMN "totalSubposts";
 
 -- DropTable
 DROP TABLE "public"."Subpost";
