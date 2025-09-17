@@ -13,27 +13,27 @@ type Source = {
   count: number;
 };
 
-type PostData = {
+type PostGroup = {
   title: string;
-  description: string;
+  content: string;
   sentiment: Sentiment;
   sentimentBar: { bullish: number; neutral: number; bearish: number };
   postCount: number;
-  sources: Source[];
+  source: Source[];
   categories: string[];
   subcategories?: string[];
 };
 
 // Mock data array
-const mockPostsData: PostData[] = [
+const mockPostsData: PostGroup[] = [
   {
     title: "Bitcoin Institutional Adoption & Market Sentiment",
-    description:
+    content:
       "Major financial institutions showing increased interest in Bitcoin with positive analyst reports...",
     sentiment: "BULLISH",
     sentimentBar: { bullish: 60, neutral: 25, bearish: 15 },
     postCount: 24,
-    sources: [
+    source: [
       {
         name: "Twitter",
         count: 12,
@@ -52,12 +52,12 @@ const mockPostsData: PostData[] = [
   },
   {
     title: "Ethereum DeFi Protocol Updates",
-    description:
+    content:
       "New developments in decentralized finance protocols showing promising growth patterns...",
     sentiment: "NEUTRAL",
     sentimentBar: { bullish: 30, neutral: 50, bearish: 20 },
     postCount: 18,
-    sources: [
+    source: [
       {
         name: "Twitter",
         count: 10,
@@ -72,12 +72,12 @@ const mockPostsData: PostData[] = [
   },
   {
     title: "Market Volatility Analysis",
-    description:
+    content:
       "Recent market downturn showing concerning trends across major cryptocurrencies...",
     sentiment: "BEARISH",
     sentimentBar: { bullish: 15, neutral: 25, bearish: 60 },
     postCount: 32,
-    sources: [
+    source: [
       {
         name: "LinkedIn",
         count: 15,
@@ -93,11 +93,11 @@ const mockPostsData: PostData[] = [
 ];
 
 type PostsGalleryProps = {
-  posts?: PostData[];
+  posts?: PostGroup[];
 };
 
 // Single card component
-export function SinglePostCard({ post }: { post: PostData }) {
+export function SinglePostCard({ post }: { post: PostGroup }) {
   const sentimentColor =
     post.sentiment === "BULLISH"
       ? "text-green-700 bg-green-100"
@@ -113,7 +113,7 @@ export function SinglePostCard({ post }: { post: PostData }) {
         </CardTitle>
 
         <CardDescription className="text-[8px] text-gray-600 mb-2 line-clamp-2">
-          {post.description}
+          {post.content}
         </CardDescription>
 
         {/* Sentiment indicators */}
@@ -150,7 +150,7 @@ export function SinglePostCard({ post }: { post: PostData }) {
 
         {/* Source Tags */}
         <div className="flex flex-wrap gap-1 mb-2 text-[8px]">
-          {post.sources.map((src, idx) => {
+          {post.source.map((src, idx) => {
             let pillClass =
               "px-2 py-0.5 rounded-full flex items-center gap-1 border text-[9px] font-medium";
             let icon = null;
