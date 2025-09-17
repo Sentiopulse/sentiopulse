@@ -9,14 +9,8 @@ const INGEST_SECRET = process.env.INGEST_SECRET;
 // Zod validation schema (moved outside handler for efficiency)
 const postSchema = z.object({
     content: z.string(),
-    sentiment: z.enum([Sentiment.BULLISH, Sentiment.NEUTRAL, Sentiment.BEARISH]),
-    source: z.enum([
-        Source.REDDIT,
-        Source.TWITTER,
-        Source.YOUTUBE,
-        Source.TELEGRAM,
-        Source.FARCASTER,
-    ]),
+    sentiment: z.nativeEnum(Sentiment),
+    source: z.nativeEnum(Source),
     categories: z.array(z.string()),
     subcategories: z.array(z.string()),
     link: z.string().optional(),
