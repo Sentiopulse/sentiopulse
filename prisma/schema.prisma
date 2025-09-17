@@ -48,17 +48,17 @@ enum Source {
   FARCASTER
 }
 
-model Post {
-  id             String    @id @default(uuid())
+model PostGroup {
+  id             String  @id @default(uuid())
   title          String
-  subposts       Subpost[]
-  totalSubposts  Int       @default(0)
+  posts          Post[]
+  totalposts  Int     @default(0)
   bullishSummary String?
   bearishSummary String?
   neutralSummary String?
 }
 
-model Subpost {
+model Post {
   id            String    @id @default(uuid())
   content       String
   sentiment     Sentiment
@@ -66,8 +66,8 @@ model Subpost {
   categories    String[]  @default([])
   subcategories String[]  @default([])
   link          String?
-  postId        String
-  post          Post      @relation(fields: [postId], references: [id])
+  postGroupId   String
+  postGroup     PostGroup @relation(fields: [postGroupId], references: [id])
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 }
