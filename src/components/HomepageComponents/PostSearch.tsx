@@ -1,13 +1,11 @@
-import { Select, SelectItem } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
-import { PostSortSelect, SortField, SortOrder } from "./PostSortSelect";
 
 interface PostFiltersProps {
   search: string;
   onSearchChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-export default function PostFilters({
+export default function PostSearch({
   search,
   onSearchChange,
 }: PostFiltersProps) {
@@ -17,8 +15,8 @@ export default function PostFilters({
         <Input
           value={search}
           onChange={onSearchChange}
-          placeholder="Search posts..."
-          className="w-full max-w-md shadow-md rounded-lg border border-gray-200 focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition"
+          placeholder="Search posts by keyword..."
+          className="md:w-[600px] h-10 shadow-md rounded-lg bg-violet-50 border-2 focus-visible:!border-blue-500 focus:!ring-0 focus-visible:!ring-0"
         />
       </div>
     </div>
