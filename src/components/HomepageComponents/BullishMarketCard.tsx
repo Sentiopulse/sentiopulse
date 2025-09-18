@@ -41,7 +41,7 @@ const MockData = {
 export default function BullishMarketCard() {
   return (
     <div className="flex justify-center font-sans">
-      <Card className="flex w-[500px] h-[240px] md:w-[950px] bg-gradient-to-r from-green-50 to-white border-l-green-500 border-5">
+      <Card className="flex w-[500px] h-[290px] md:w-[1000px] bg-gradient-to-r from-green-50 to-white border-l-green-500 border-l-5 pb-5">
         <CardHeader className="flex flex-col w-full">
           <div className="flex flex-row justify-between w-full">
             <CardTitle className="font-semibold">Bullish Market</CardTitle>
@@ -54,21 +54,21 @@ export default function BullishMarketCard() {
               </span>
             </CardAction>
           </div>
-          <CardDescription className="flex flex-row justify-evenly items-center gap-8 w-full mt-4">
+          <CardDescription className="flex flex-row justify-evenly items-center gap-8 w-full mt-8">
             <div className="flex flex-col">
-              <span className="text-xl font-bold text-green-500">
+              <span className="text-2xl font-bold text-green-500">
                 {MockData.sentimentPercentages.BULLISH}%
               </span>
               <span className="text-xs">Bullish</span>
             </div>
             <div className="flex flex-col">
-              <span className="text-xl font-bold">
+              <span className="text-2xl font-bold">
                 {MockData.sentimentPercentages.NEUTRAL}%
               </span>
               <span className="text-xs">Neutral</span>
             </div>
             <div className="flex flex-col">
-              <span className="text-xl font-bold text-red-500">
+              <span className="text-2xl font-bold text-red-500">
                 {MockData.sentimentPercentages.BEARISH}%
               </span>
               <span className="text-xs">Bearish</span>
@@ -76,8 +76,8 @@ export default function BullishMarketCard() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="flex flex-col justify-start">
-            <div className="flex flex-row items-center gap-6 w-[100px]">
+          <div className="flex flex-col justify-start gap-0.5">
+            <div className="flex flex-row items-center w-28 justify-between mb-0.5">
               <span
                 role="progressbar"
                 aria-label="Bullish sentiment"
@@ -85,13 +85,13 @@ export default function BullishMarketCard() {
                 aria-valuemax={100}
                 aria-valuenow={MockData.sentimentPercentages.BULLISH}
                 style={{ width: `${MockData.sentimentPercentages.BULLISH}%` }}
-                className="block bg-green-500 h-2.5 rounded-2xl"
+                className="block bg-green-500 h-2 rounded-2xl transition-all"
               ></span>
-              <span className="text-muted-foreground text-xs">
+              <span className="text-muted-foreground font-semibold text-[13px] w-6 text-right ml-1">
                 {MockData.sentimentPercentages.BULLISH}%
               </span>
             </div>
-            <div className="flex flex-row items-center gap-6 w-[100px]">
+            <div className="flex flex-row items-center w-28 justify-between mb-0.5">
               <span
                 role="progressbar"
                 aria-label="Neutral sentiment"
@@ -99,13 +99,13 @@ export default function BullishMarketCard() {
                 aria-valuemax={100}
                 aria-valuenow={MockData.sentimentPercentages.NEUTRAL}
                 style={{ width: `${MockData.sentimentPercentages.NEUTRAL}%` }}
-                className="block bg-gray-500 h-2.5 rounded-2xl"
+                className="block bg-gray-500 h-2 rounded-2xl transition-all"
               ></span>
-              <span className="text-muted-foreground text-xs">
+              <span className="text-muted-foreground font-semibold text-[13px] w-6 text-right ml-1">
                 {MockData.sentimentPercentages.NEUTRAL}%
               </span>
             </div>
-            <div className="flex flex-row items-center gap-6 w-[100px]">
+            <div className="flex flex-row items-center w-28 justify-between mb-0.5">
               <span
                 role="progressbar"
                 aria-label="Bearish sentiment"
@@ -113,9 +113,9 @@ export default function BullishMarketCard() {
                 aria-valuemax={100}
                 aria-valuenow={MockData.sentimentPercentages.BEARISH}
                 style={{ width: `${MockData.sentimentPercentages.BEARISH}%` }}
-                className="block bg-red-500 h-2.5 rounded-2xl"
+                className="block bg-red-500 h-2 rounded-2xl transition-all"
               ></span>
-              <span className="text-muted-foreground text-xs">
+              <span className="text-muted-foreground font-semibold text-[13px] w-6 text-right ml-1">
                 {MockData.sentimentPercentages.BEARISH}%
               </span>
             </div>
@@ -126,7 +126,7 @@ export default function BullishMarketCard() {
             <span>
               <CiCalendar size={16} className="text-gray-500" />
             </span>
-            <span className="text-muted-foreground text-xs">
+            <span className="text-muted-foreground font-semibold text-xs">
               Updated {MockData.minutesAgo} minutes ago
             </span>
           </div>

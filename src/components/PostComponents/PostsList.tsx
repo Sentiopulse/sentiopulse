@@ -1,12 +1,13 @@
 "use client";
 import { useEffect, useState, useRef, useCallback } from "react";
 import SentimentBar from "./SentimentBar";
-import PostFilters from "./PostFilters";
+import PostFilters from "../HomepageComponents/PostSearch";
 import { SortField, SortOrder } from "./PostSortSelect";
 import Spinner from "./Spinner";
 import type { Post } from "@prisma/client";
-import PostGallery from "./PostGallery";
+import PostGallery from "../HomepageComponents/PostGallery";
 import BullishMarketCard from "../HomepageComponents/BullishMarketCard";
+import Posr
 
 export default function PostsList() {
   const [error, setError] = useState<string | null>(null);
@@ -98,7 +99,7 @@ export default function PostsList() {
 
   return (
     <div className="mt-8">
-      <PostFilters
+      <PostSearch
         search={search}
         onSearchChange={onChangeHandler}
       />

@@ -4,9 +4,10 @@ import { CiChat1 } from "react-icons/ci";
 import { FaTwitter, FaLinkedin, FaReddit } from "react-icons/fa";
 import { IoIosTrendingUp, IoIosTrendingDown } from "react-icons/io";
 import { FiMinus } from "react-icons/fi";
+import { FaArrowRight } from "react-icons/fa6";
 
-import { Card, CardDescription, CardHeader, CardTitle } from "../ui/card";
-import TagRenderer from "./TagRenderer";
+import { Card, CardAction, CardDescription, CardHeader, CardTitle } from "../ui/card";
+import TagRenderer from "../PostComponents/TagRenderer";
 import type { Sentiment, Source } from "@prisma/client";
 
 type PostGroup = {
@@ -194,12 +195,18 @@ export function PostCard({ postGroup }: { postGroup: PostGroup }) {
   ];
 
   return (
-    <Card className="w-72 h-80 font-sans">
+    <Card className="w-80 h-80 font-sans transition-transform duration-200 hover:-translate-y-2 group cursor-pointer">
       <CardHeader className="p-3">
         <CardTitle className="text-sm font-semibold leading-tight mb-2">
+          <div className="flex flex-row justify-between">
+            <div className="group-hover:text-blue-500">
           {postGroup.title}
+            </div>
+            <div className="text-muted-foreground group-hover:text-blue-500">
+              <FaArrowRight/>
+            </div>
+          </div>
         </CardTitle>
-
         <CardDescription className="text-xs text-gray-600 mb-3 line-clamp-3">
           {dominantSentiment.description}
         </CardDescription>
@@ -288,7 +295,7 @@ export default function PostsGallery({
   postGroups = mockPostGroup,
 }: PostsGalleryProps) {
   return (
-    <div className="flex flex-row justify-start ml-30 gap-6 p-2">
+    <div className="flex md:flex-row justify-start md:ml-20 gap-6 p-2">
       {postGroups.map((postGroup, index) => (
         <PostCard key={index} postGroup={postGroup} />
       ))}
