@@ -1,23 +1,11 @@
 import { prisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
-import { SignupInput } from "./schema";
+import { signupInput } from "./schema";
 import { error, Result, success } from "@/lib/result";
 import { getSession } from "@/lib/session";
-import type { Role } from "@prisma/client";
+import type { User } from "@prisma/client";
 
-interface User {
-    id: string;
-    email?: string | null;
-    name?: string | null;
-    role: Role;
-    createdAt: Date;
-    emailVerified?: Date | null;
-    subscriptionType: string;
-    lastLoginAt?: Date | null;
-    image?: string | null;
-}
-
-export async function Signup(input: SignupInput): Promise<Result<User>> {
+export async function Signup(input: signupInput): Promise<Result<User>> {
     const { email, name, password } = input;
 
     const normalisedEmail = email.toLowerCase().trim();
@@ -37,18 +25,7 @@ export async function Signup(input: SignupInput): Promise<Result<User>> {
         data: {
             name,
             email: normalisedEmail,
-            password: hashedPassword,
-        },
-        select: {
-            id: true,
-            email: true,
-            name: true,
-            role: true,
-            createdAt: true,
-            emailVerified: true,
-            subscriptionType: true,
-            lastLoginAt: true,
-            image: true,
+            password: hashedPassword
         }
     });
     const session = await getSession();

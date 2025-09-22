@@ -1,17 +1,17 @@
 'use server';
 
 import { actionClient } from '@/lib/action';
-import { Signin} from './logic';
-import { SigninSchema} from './schema';
+import { signin} from './logic';
+import { signinSchema} from './schema';
 
 export const signinAction = actionClient
-  .inputSchema(SigninSchema)
+  .inputSchema(signinSchema)
   .metadata({ actionName: 'signin' })
   .action(async ({ parsedInput }) => {
     const { email } = parsedInput;
 
     try {
-      const result = await Signin(parsedInput);
+      const result = await signin(parsedInput);
 
       if (result.success) {
         return result.data;

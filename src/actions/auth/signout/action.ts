@@ -1,13 +1,13 @@
 'use server';
 
 import { authActionClient } from '@/lib/action';
-import { Signout} from './logic';
+import { signout} from './logic';
 
 export const signoutAction = authActionClient.metadata({ actionName: 'signout' }).action(async ({ ctx }) => {
   const userId = ctx.session.user.id;
 
   try {
-    const result = await Signout();
+    const result = await signout();
 
     if (result.success) {
       return result.data;
