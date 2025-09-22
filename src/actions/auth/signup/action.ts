@@ -2,10 +2,10 @@
 
 import { actionClient } from '@/lib/action';
 import { Signup} from './logic';
-import { SignupSchema} from './schema';
+import { signupSchema} from './schema';
 
 export const signupAction = actionClient
-  .inputSchema(SignupSchema)
+  .inputSchema(signupSchema)
   .metadata({ actionName: 'signup' })
   .action(async ({ parsedInput }) => {
     try {
