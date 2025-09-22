@@ -1,3 +1,5 @@
+import 'server-only';
+
 import { prisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
 import { signupInput } from "./schema";

@@ -1,3 +1,5 @@
+import 'server-only';
+
 import { prisma } from "@/lib/prisma";
 import { signinInput } from "./schema";
 import bcrypt from "bcryptjs";
@@ -23,7 +25,7 @@ export async function signin(input: signinInput): Promise<Result<Omit<User, 'pas
 
     //Verify Password
     const isValidPassword = await bcrypt.compare(password, user.password!);
-    
+
     if (!isValidPassword) {
         console.error('signin error: Invalid Password');
         return error('Invalid credentials');
