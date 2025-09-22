@@ -22,12 +22,12 @@ export async function Signup(input: SignupInput): Promise<Result<User>> {
 
     const normalisedEmail = email.toLowerCase().trim();
 
-    const exisitngUser = await prisma.user.findUnique({
+    const exisitingUser = await prisma.user.findUnique({
         where: {
             email: normalisedEmail
         }
     });
-    if (exisitngUser) {
+    if (exisitingUser) {
         console.error('Singup error: User with this email already exists')
         return error('Something went wrong')
     };

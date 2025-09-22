@@ -12,7 +12,10 @@ export function defineMetadataSchema() {
 
 export const actionClient = createSafeActionClient({
   defineMetadataSchema,
-  handleServerError: (err: Error) => err.message,
+  handleServerError: (err: Error) => {
+    console.error('Action server error:', err);
+    return 'Something went wrong';
+  },
   defaultValidationErrorsShape: 'flattened'
 })
   /**
@@ -51,8 +54,8 @@ export const authActionClient = actionClient.use(async ({ next, ctx }) => {
     ctx: {
       ...ctx,
       session: {
-        destroy: ctx.session.destroy,
-        save: ctx.session.save,
+        destroy: ctx.session.destroy.bind(ctx.session),
+        save: ctx.session.save.bind(ctx.session),
         user: {
           id: userId
         }

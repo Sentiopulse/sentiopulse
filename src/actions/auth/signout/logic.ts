@@ -5,6 +5,6 @@ import { getSession } from '@/lib/session';
 
 export async function Signout(): Promise<Result<undefined>> {
   const session = await getSession();
-  session.destroy();
+  await session.destroy();
   return success(undefined);
 }
