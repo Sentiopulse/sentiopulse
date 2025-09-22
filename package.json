@@ -22,15 +22,18 @@
     "bcryptjs": "^3.0.2",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "iron-session": "^8.0.4",
     "lucide-react": "^0.542.0",
     "luxon": "^3.7.2",
-    "next": "15.5.2",
+    "next": "^15.5.2",
+    "next-safe-action": "^8.0.11",
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "react-icons": "^5.5.0",
     "tailwind-merge": "^3.3.1",
     "viem": "^2.37.5",
-    "wagmi": "^2.16.9"
+    "wagmi": "^2.16.9",
+    "zod": "^3.25.76"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
