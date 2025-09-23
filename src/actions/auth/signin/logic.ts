@@ -1,13 +1,13 @@
 import 'server-only';
 
 import { prisma } from "@/lib/prisma";
-import { signinInput } from "./schema";
 import bcrypt from "bcryptjs";
 import { error, Result, success } from "@/lib/result";
 import { getSession } from "@/lib/session";
 import type { User } from "@prisma/client";
+import { SigninInput } from './schema';
 
-export async function signin(input: signinInput): Promise<Result<Omit<User, 'password'>>> {
+export async function signin(input: SigninInput): Promise<Result<Omit<User, 'password'>>> {
     const { email, password } = input;
 
     const normalisedEmail = email.toLowerCase().trim();

@@ -15,11 +15,11 @@ import { useForm } from "react-hook-form";
 import { useAction } from "next-safe-action/hooks";
 import { Form } from "@/components/ui/form";
 import FormInput from "@/components/shared/Form/FormInput/FormInput";
-import FormButton from "@/components/shared/Form/FormButton/FormButton";
 import { signinSchema } from "@/actions/auth/signin/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { toast } from "sonner";
+import { FormButton } from "@/components/shared/Form/FormButton/FormButton";
 
 type SignInFormValues = z.infer<typeof signinSchema>;
 
@@ -27,6 +27,10 @@ export default function SigninPageContainer() {
   const form = useForm<SignInFormValues>({
     mode: "onChange",
     resolver: zodResolver(signinSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
   });
   const router = useRouter();
 
@@ -94,7 +98,11 @@ export default function SigninPageContainer() {
               <FormButton
                 className="w-full"
                 loading={isExecuting}
-                disabled={!form.formState.isValid || isExecuting}
+                disabled={
+                  !form.formState.isValid ||
+                  !form.formState.isDirty ||
+                  isExecuting
+                }
               >
                 Sign in
               </FormButton>

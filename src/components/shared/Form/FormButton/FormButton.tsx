@@ -8,7 +8,7 @@ type FormButtonProps = {
   children: React.ReactNode;
 };
 
-export default function FormButton({
+export function FormButton({
   type = "submit",
   loading = false,
   disabled = false,

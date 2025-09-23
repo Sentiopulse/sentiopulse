@@ -2,12 +2,12 @@ import 'server-only';
 
 import { prisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
-import { signupInput } from "./schema";
 import { error, Result, success } from "@/lib/result";
 import { getSession } from "@/lib/session";
 import type { User } from "@prisma/client";
+import { SignupInput } from './schema';
 
-export async function Signup(input: signupInput): Promise<Result<User>> {
+export async function Signup(input: SignupInput): Promise<Result<User>> {
     const { email, name, password } = input;
 
     const normalisedEmail = email.toLowerCase().trim();
