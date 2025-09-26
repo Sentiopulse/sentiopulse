@@ -7,7 +7,7 @@ import { getSession } from "@/lib/session";
 import type { User } from "@prisma/client";
 import { SignupInput } from './schema';
 
-export async function Signup(input: SignupInput): Promise<Result<User>> {
+export async function signup(input: SignupInput): Promise<Result<Omit<User, 'password'>>> {
     const { email, name, password } = input;
 
     const normalisedEmail = email.toLowerCase().trim();
@@ -34,5 +34,8 @@ export async function Signup(input: SignupInput): Promise<Result<User>> {
     session.user = { id: user.id };
     await session.save();
 
-    return success(user);
+    // Omit password before returning
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { password: _password, ...userWithoutPassword } = user;
+    return success(userWithoutPassword);
 }

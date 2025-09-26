@@ -1,7 +1,7 @@
 'use server';
 
 import { actionClient } from '@/lib/action';
-import { Signup} from './logic';
+import { signup} from './logic';
 import { signupSchema} from './schema';
 
 export const signupAction = actionClient
@@ -9,7 +9,7 @@ export const signupAction = actionClient
   .metadata({ actionName: 'signup' })
   .action(async ({ parsedInput }) => {
     try {
-      const result = await Signup(parsedInput);
+      const result = await signup(parsedInput);
 
       if (result.success) {
         return result.data;

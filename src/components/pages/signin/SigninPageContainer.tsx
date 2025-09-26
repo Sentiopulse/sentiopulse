@@ -14,16 +14,16 @@ import { signinAction } from "@/actions/auth/signin/action";
 import { useForm } from "react-hook-form";
 import { useAction } from "next-safe-action/hooks";
 import { Form } from "@/components/ui/form";
-import FormInput from "@/components/shared/Form/FormInput/FormInput";
+import FormInput from "@/components/shared/Form/FormInput";
 import { signinSchema } from "@/actions/auth/signin/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { toast } from "sonner";
-import { FormButton } from "@/components/shared/Form/FormButton/FormButton";
+import { FormButton } from "@/components/shared/Form/FormButton";
 
 type SignInFormValues = z.infer<typeof signinSchema>;
 
-export default function SigninPageContainer() {
+export function SigninPageContainer() {
   const form = useForm<SignInFormValues>({
     mode: "onChange",
     resolver: zodResolver(signinSchema),
@@ -83,15 +83,6 @@ export default function SigninPageContainer() {
                 type="password"
                 required
               />
-
-              <div className="flex justify-end mb-3">
-                <Link
-                  href="/auth/forgot-password"
-                  className="text-sm text-blue-600 hover:underline"
-                >
-                  Forgot password?
-                </Link>
-              </div>
             </CardContent>
 
             <CardFooter className="flex flex-col space-y-4">
