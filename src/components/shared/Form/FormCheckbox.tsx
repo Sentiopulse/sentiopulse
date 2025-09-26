@@ -49,5 +49,3 @@ export function FormCheckbox<T extends FieldValues>({
     />
   );
 }
-
-export default FormCheckbox;
