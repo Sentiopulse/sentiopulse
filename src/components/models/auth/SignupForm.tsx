@@ -29,7 +29,7 @@ export function SignupForm() {
       email: "",
       password: "",
       confirmPassword: "",
-      terms: true,
+      terms: false,
     },
   });
   const router = useRouter();
