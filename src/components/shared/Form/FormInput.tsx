@@ -79,5 +79,3 @@ export function FormInput<T extends FieldValues>({
     />
   );
 }
-
-export default FormInput;
