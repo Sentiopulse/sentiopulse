@@ -1,8 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 import {
   Card,
@@ -15,37 +13,18 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import GoogleSignInButton from "@/components/GoogleSignInButton";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
+import WalletConnectButton from "./walletconnectbutton";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
-  const router = useRouter();
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  // Temporarily disable login functionality until new auth system is implemented
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
-    setError("");
-
-    try {
-      const result = await signIn("credentials", {
-        email,
-        password,
-        redirect: false,
-      });
-
-      if (result?.error) {
-        setError("Invalid email or password");
-      } else {
-        router.push("/");
-        router.refresh();
-      }
-    } catch {
-      setError("An error occurred. Please try again.");
-    } finally {
-      setIsLoading(false);
-    }
+    setError("Login is temporarily unavailable. Please check back soon.");
   };
 
   return (
@@ -64,7 +43,7 @@ export default function LoginForm() {
             <div className="flex flex-col justify-center space-y-3">
               <GoogleSignInButton />
               <div className="flex justify-center">
-                <ConnectButton />
+                <WalletConnectButton/>
               </div>
             </div>
             <div className="relative">
